@@ -1,0 +1,5 @@
+name: NoEasyPlace
+version: '${projectVersion}'
+main: net.okocraft.noeasyplace.Main
+api-version: 1.20
+folia-supported: true
