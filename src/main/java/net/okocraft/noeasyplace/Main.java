@@ -13,10 +13,9 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new Listener() {
             @EventHandler(ignoreCancelled = true)
             private void onBlockPlace(@NotNull BlockPlaceEvent event) {
-                if (event.getPlayer().getUniqueId().getMostSignificantBits() == 0L) {
-                    return;
-                }
-                if (event.getBlock().equals(event.getBlockAgainst())) {
+                if (event.getPlayer().getUniqueId().getMostSignificantBits() != 0L
+                        && !event.getBlockReplacedState().getType().isSolid()
+                        && event.getBlock().equals(event.getBlockAgainst())) {
                     event.setCancelled(true);
                     event.getPlayer().sendMessage("§ceasyplacemodeでのブロック設置は利用できません。");
                 }
