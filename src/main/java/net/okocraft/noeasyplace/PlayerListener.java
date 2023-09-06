@@ -3,6 +3,8 @@ package net.okocraft.noeasyplace;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -41,6 +43,11 @@ class PlayerListener implements Listener {
 
         // slab, creating path or something...
         if (event.getBlockReplacedState().getType().isSolid()) {
+            return;
+        }
+
+        if (event.getBlock().getType() == Material.LILY_PAD
+                && event.getBlock().getRelative(BlockFace.DOWN).getType() == Material.WATER) {
             return;
         }
 
