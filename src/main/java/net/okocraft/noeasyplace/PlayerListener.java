@@ -5,6 +5,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.type.Candle;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -41,14 +42,21 @@ class PlayerListener implements Listener {
             return;
         }
 
-        // slab, creating path... (solid) or snow, grass... (replaceable non solid)
-        Material replaced = event.getBlockReplacedState().getType();
-        if (replaced.isSolid() || isReplaceableMaterial(replaced)) {
+        if (!event.getBlockReplacedState().getType().isAir()) {
             return;
         }
 
-        if (event.getBlock().getType() == Material.LILY_PAD
-                && event.getBlock().getRelative(BlockFace.DOWN).getType() == Material.WATER) {
+        Material placedType = event.getBlock().getType();
+        if (placedType == Material.POWDER_SNOW_BUCKET) {
+            return;
+        }
+
+        Material downBlockType = event.getBlock().getRelative(BlockFace.DOWN).getType();
+        if (placedType == Material.LILY_PAD && (downBlockType == Material.WATER || downBlockType == Material.ICE)) {
+            return;
+        }
+
+        if (placedType == Material.FROGSPAWN && downBlockType == Material.WATER) {
             return;
         }
 
@@ -59,36 +67,5 @@ class PlayerListener implements Listener {
 
         event.setCancelled(true);
         event.getPlayer().sendMessage("§ceasyplacemodeでのブロック設置は利用できません。");
-    }
-
-    private static boolean isReplaceableMaterial(Material material) {
-        switch (material) {
-            case AIR:
-            case WATER:
-            case LAVA:
-            case GRASS:
-            case FERN:
-            case DEAD_BUSH:
-            case SEAGRASS:
-            case TALL_SEAGRASS:
-            case FIRE:
-            case SOUL_FIRE:
-            case SNOW:
-            case VINE:
-            case GLOW_LICHEN:
-            case LIGHT:
-            case TALL_GRASS:
-            case LARGE_FERN:
-            case STRUCTURE_VOID:
-            case VOID_AIR:
-            case CAVE_AIR:
-            case BUBBLE_COLUMN:
-            case WARPED_ROOTS:
-            case NETHER_SPROUTS:
-            case CRIMSON_ROOTS:
-                return true;
-            default:
-                return false;
-        }
     }
 }
