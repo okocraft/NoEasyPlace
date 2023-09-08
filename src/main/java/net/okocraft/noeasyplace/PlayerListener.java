@@ -47,7 +47,7 @@ class PlayerListener implements Listener {
         }
 
         Material placedType = event.getBlock().getType();
-        if (placedType == Material.POWDER_SNOW_BUCKET) {
+        if (placedType == Material.POWDER_SNOW) {
             return;
         }
 
